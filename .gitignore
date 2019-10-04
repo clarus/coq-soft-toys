@@ -1,4 +1,6 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# configuration
+src/keys.json
+src/products.json
 
 # dependencies
 /node_modules
