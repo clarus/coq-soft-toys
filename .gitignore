@@ -1,6 +1,5 @@
 # configuration
-src/keys.json
-src/products.json
+src/config.json
 
 # dependencies
 /node_modules

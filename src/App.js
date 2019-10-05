@@ -1,26 +1,26 @@
 import React, {PureComponent} from "react";
 import Header from "./Header.js";
-import Product from "./Product.js";
-import keys from "./keys.json";
-import products from "./products.json";
+import Products from "./Products.js";
+import config from "./config.json";
 
 // eslint-disable-next-line no-undef
-const stripe = Stripe(keys.stripe);
+const stripe = Stripe(config.stripe.keys.public);
 
 export default class App extends PureComponent {
   state = {
     buyStatus: {type: "Nothing"},
+    skus: {type: "Loading"},
   };
 
   handleBuy = async (id) => {
     this.setState({buyStatus: {type: "Loading"}});
 
     const result = await stripe.redirectToCheckout({
+      cancelUrl: config.stripe.url.cancel,
       items: [
         {sku: id, quantity: 1}
       ],
-      successUrl: "https://example.com/success",
-      cancelUrl: "https://example.com/cancel",
+      successUrl: config.stripe.url.success,
     });
 
     if (result.error) {
@@ -33,25 +33,31 @@ export default class App extends PureComponent {
     }
   };
 
+  async componentDidMount() {
+    const skus = await (await fetch("http://localhost:4000/skus")).json();
+
+    this.setState({
+      skus: {
+        type: "Loaded",
+        value: skus.data,
+      },
+    });
+  }
+
   render() {
-    const {buyStatus} = this.state;
+    const {buyStatus, skus} = this.state;
 
     return (
       <div>
         <Header buyStatus={buyStatus} />
-        <ul>
-          {products.map(product =>
-            <Product
-              disabled={buyStatus.type !== "Nothing"}
-              id={product.id}
-              image={product.image}
-              key={product.id}
-              name={product.name}
-              onBuy={this.handleBuy}
-              price={product.price}
-            />
-          )}
-        </ul>
+        {skus.type === "Loaded" ?
+          <Products
+            disabled={buyStatus.type !== "Nothing"}
+            onBuy={this.handleBuy}
+            skus={skus.value}
+          /> :
+          "Loading products..."
+        }
       </div>
     );
   }
