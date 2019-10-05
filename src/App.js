@@ -1,18 +1,34 @@
+// @flow
 import React, {PureComponent} from "react";
 import Header from "./Header.js";
 import Products from "./Products.js";
 import config from "./config.json";
+import * as Type from "./type.js";
 
 // eslint-disable-next-line no-undef
 const stripe = Stripe(config.stripe.keys.public);
 
-export default class App extends PureComponent {
-  state = {
+type Props = {};
+
+type Skus = {
+  type: "Loaded",
+  value: Type.Sku[],
+} | {
+  type: "Loading",
+}
+
+type State = {
+  buyStatus: Type.BuyStatus,
+  skus: Skus,
+};
+
+export default class App extends PureComponent<Props, State> {
+  state: State = {
     buyStatus: {type: "Nothing"},
     skus: {type: "Loading"},
   };
 
-  handleBuy = async (id) => {
+  handleBuy = async (id: string): Promise<void> => {
     this.setState({buyStatus: {type: "Loading"}});
 
     const result = await stripe.redirectToCheckout({
@@ -33,7 +49,7 @@ export default class App extends PureComponent {
     }
   };
 
-  async componentDidMount() {
+  async componentDidMount(): Promise<void> {
     const skus = await (await fetch("http://localhost:4000/skus")).json();
 
     this.setState({
@@ -41,7 +57,7 @@ export default class App extends PureComponent {
         type: "Loaded",
         value: skus.data,
       },
-    });
+    })
   }
 
   render() {
