@@ -1,4 +1,4 @@
-# Coq Soft Toys
+# 🐓 Coq Soft Toys
 > Buy Coq soft toys online
 
 **Work In Progress**
