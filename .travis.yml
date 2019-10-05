@@ -8,6 +8,7 @@ cache:
     - node_modules
 script:
   - npm run config-init
-  - npm run build
+  - npm run prettier-check
   - npm run flow
+  - npm run build
   - npm test
