@@ -12,5 +12,6 @@
 ## Run
 To start:
 ```
+yarn run config-init
 yarn start
 ```

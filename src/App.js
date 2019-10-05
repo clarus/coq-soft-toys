@@ -2,11 +2,11 @@
 import React, {PureComponent} from "react";
 import Header from "./Header.js";
 import Products from "./Products.js";
-import config from "./config.json";
+import configPublic from "./config/public.json";
 import * as Type from "./type.js";
 
 // eslint-disable-next-line no-undef
-const stripe = Stripe(config.stripe.keys.public);
+const stripe = Stripe(configPublic.stripe.key);
 
 type Props = {};
 
@@ -34,9 +34,9 @@ export default class App extends PureComponent<Props, State> {
     this.setState({buyStatus: {type: "Loading"}});
 
     const result = await stripe.redirectToCheckout({
-      cancelUrl: config.stripe.url.cancel,
+      cancelUrl: `${configPublic.stripe.url.root}/cancel`,
       items: [{sku: id, quantity: 1}],
-      successUrl: config.stripe.url.success,
+      successUrl: `${configPublic.stripe.url.root}/success`,
     });
 
     if (result.error) {

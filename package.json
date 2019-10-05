@@ -12,6 +12,7 @@
   },
   "scripts": {
     "build": "react-scripts build",
+    "config-init": "cp src/config/example/*.json src/config/",
     "eject": "react-scripts eject",
     "flow": "flow",
     "flow-typed": "flow-typed",

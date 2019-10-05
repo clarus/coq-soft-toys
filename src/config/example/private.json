@@ -1,0 +1,12 @@
+{
+  "database": {
+    "database": "database",
+    "host": "localhost",
+    "password": "password",
+    "port": 5432,
+    "user": "user"
+  },
+  "stripe": {
+    "key": "stripe_secret_key"
+  }
+}

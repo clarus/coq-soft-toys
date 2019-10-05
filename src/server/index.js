@@ -3,10 +3,10 @@ import bodyParser from "body-parser";
 import express from "express";
 import {Pool} from "pg";
 import Stripe from "stripe";
-import config from "../config.json";
+import configPrivate from "../config/private.json";
 
-const stripe = Stripe(config.stripe.keys.secret);
-const pool = new Pool(config.database);
+const stripe = Stripe(configPrivate.stripe.key);
+const pool = new Pool(configPrivate.database);
 const app = express();
 const port = 4000;
 
