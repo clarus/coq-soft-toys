@@ -1,4 +1,5 @@
 # configuration
+src/server/config.json
 src/keys.json
 src/products.json
 
