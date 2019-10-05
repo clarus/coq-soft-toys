@@ -8,9 +8,11 @@ export default class Header extends PureComponent {
       case "Nothing":
         return null;
       case "Loading":
-        return <p>Veuillez patienter...</p>;
+        return <p>Please wait...</p>;
       case "Error":
-        return <p>Une erreur est survenue: {buyStatus.message}</p>
+        return <p>An error happened: {buyStatus.message}</p>
+      default:
+        return buyStatus;
     }
   }
 }

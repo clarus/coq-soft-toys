@@ -7,10 +7,11 @@
     "pg": "^7.12.1",
     "react": "^16.10.1",
     "react-dom": "^16.10.1",
-    "react-scripts": "3.2.0"
+    "react-scripts": "3.2.0",
+    "stripe": "^7.9.1"
   },
   "scripts": {
-    "serve": "babel-node --presets @babel/preset-env,@babel/preset-flow src/server/index.js",
+    "serve": "nodemon --exec babel-node --presets @babel/preset-env,@babel/preset-flow src/server/index.js",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -34,6 +35,7 @@
   "devDependencies": {
     "@babel/node": "^7.6.2",
     "@babel/preset-env": "^7.6.2",
-    "@babel/preset-flow": "^7.0.0"
+    "@babel/preset-flow": "^7.0.0",
+    "nodemon": "^1.19.3"
   }
 }
