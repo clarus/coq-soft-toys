@@ -12,6 +12,7 @@
 ## Run
 To start:
 ```
+yarn install
 yarn run config-init
 yarn start
 ```
