@@ -15,7 +15,7 @@ export default class Products extends PureComponent<Props> {
 
     return (
       <ul>
-        {skus.map(sku =>
+        {skus.map(sku => (
           <Product
             disabled={disabled}
             id={sku.id}
@@ -25,7 +25,7 @@ export default class Products extends PureComponent<Props> {
             onBuy={onBuy}
             price={sku.price}
           />
-        )}
+        ))}
       </ul>
     );
   }

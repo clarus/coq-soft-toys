@@ -1,13 +1,16 @@
 // @flow
 
-export type BuyStatus = {
-  type: "Error",
-  message: string,
-} | {
-  type: "Loading",
-} | {
-  type: "Nothing",
-};
+export type BuyStatus =
+  | {
+      type: "Error",
+      message: string,
+    }
+  | {
+      type: "Loading",
+    }
+  | {
+      type: "Nothing",
+    };
 
 export type Sku = {
   attributes: {

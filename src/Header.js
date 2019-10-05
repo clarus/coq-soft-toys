@@ -16,7 +16,7 @@ export default class Header extends PureComponent<Props> {
       case "Loading":
         return <p>Please wait...</p>;
       case "Error":
-        return <p>An error happened: {buyStatus.message}</p>
+        return <p>An error happened: {buyStatus.message}</p>;
       default:
         return buyStatus;
     }

@@ -10,12 +10,14 @@ const stripe = Stripe(config.stripe.keys.public);
 
 type Props = {};
 
-type Skus = {
-  type: "Loaded",
-  value: Type.Sku[],
-} | {
-  type: "Loading",
-}
+type Skus =
+  | {
+      type: "Loaded",
+      value: Type.Sku[],
+    }
+  | {
+      type: "Loading",
+    };
 
 type State = {
   buyStatus: Type.BuyStatus,
@@ -33,9 +35,7 @@ export default class App extends PureComponent<Props, State> {
 
     const result = await stripe.redirectToCheckout({
       cancelUrl: config.stripe.url.cancel,
-      items: [
-        {sku: id, quantity: 1}
-      ],
+      items: [{sku: id, quantity: 1}],
       successUrl: config.stripe.url.success,
     });
 
@@ -44,7 +44,7 @@ export default class App extends PureComponent<Props, State> {
         buyStatus: {
           type: "Error",
           message: result.error.message,
-        }
+        },
       });
     }
   };
@@ -57,7 +57,7 @@ export default class App extends PureComponent<Props, State> {
         type: "Loaded",
         value: skus.data,
       },
-    })
+    });
   }
 
   render() {
@@ -66,14 +66,15 @@ export default class App extends PureComponent<Props, State> {
     return (
       <div>
         <Header buyStatus={buyStatus} />
-        {skus.type === "Loaded" ?
+        {skus.type === "Loaded" ? (
           <Products
             disabled={buyStatus.type !== "Nothing"}
             onBuy={this.handleBuy}
             skus={skus.value}
-          /> :
+          />
+        ) : (
           "Loading products..."
-        }
+        )}
       </div>
     );
   }

@@ -15,12 +15,17 @@
     "eject": "react-scripts eject",
     "flow": "flow",
     "flow-typed": "flow-typed",
+    "prettier": "prettier --write src/**/*.{js,json}",
     "serve": "nodemon --exec babel-node --presets @babel/preset-env,@babel/preset-flow src/server/index.js",
     "start": "react-scripts start",
     "test": "react-scripts test"
   },
   "eslintConfig": {
     "extends": "react-app"
+  },
+  "prettier": {
+    "bracketSpacing": false,
+    "trailingComma": "all"
   },
   "browserslist": {
     "production": [
@@ -40,6 +45,7 @@
     "@babel/preset-flow": "^7.0.0",
     "flow-bin": "^0.109.0",
     "flow-typed": "^2.6.1",
-    "nodemon": "^1.19.3"
+    "nodemon": "^1.19.3",
+    "prettier": "^1.18.2"
   }
 }
