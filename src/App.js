@@ -5,9 +5,6 @@ import Products from "./Products.js";
 import configPublic from "./config/public.json";
 import * as Type from "./type.js";
 
-// eslint-disable-next-line no-undef
-const stripe = Stripe(configPublic.stripe.key);
-
 type Props = {};
 
 type Skus =
@@ -33,6 +30,8 @@ export default class App extends PureComponent<Props, State> {
   handleBuy = async (id: string): Promise<void> => {
     this.setState({buyStatus: {type: "Loading"}});
 
+    // eslint-disable-next-line no-undef
+    const stripe = Stripe(configPublic.stripe.key);
     const result = await stripe.redirectToCheckout({
       cancelUrl: `${configPublic.stripe.url.root}/cancel`,
       items: [{sku: id, quantity: 1}],
