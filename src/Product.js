@@ -1,13 +1,23 @@
+// @flow
 import React, {PureComponent} from "react";
 
-export default class Product extends PureComponent {
+type Props = {
+  disabled: boolean,
+  id: string,
+  image: string,
+  name: string,
+  onBuy: (id: string) => Promise<void>,
+  price: number,
+};
+
+export default class Product extends PureComponent<Props> {
   handleBuy = () => {
     const {id, onBuy} = this.props;
 
     onBuy(id);
   };
 
-  priceToString(price) {
+  priceToString(price: number): string {
     const cents = price % 100;
     const euros = Math.round((price - cents) / 100);
 

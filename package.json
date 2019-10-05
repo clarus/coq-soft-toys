@@ -11,14 +11,23 @@
     "stripe": "^7.9.1"
   },
   "scripts": {
+    "build": "react-scripts build",
+    "config-init": "cp src/config/example/*.json src/config/",
+    "eject": "react-scripts eject",
+    "flow": "flow",
+    "flow-typed": "flow-typed",
+    "prettier": "prettier --write src/**/*.{js,json}",
+    "prettier-check": "prettier --check src/**/*.{js,json}",
     "serve": "nodemon --exec babel-node --presets @babel/preset-env,@babel/preset-flow src/server/index.js",
     "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test": "react-scripts test"
   },
   "eslintConfig": {
     "extends": "react-app"
+  },
+  "prettier": {
+    "bracketSpacing": false,
+    "trailingComma": "all"
   },
   "browserslist": {
     "production": [
@@ -36,6 +45,9 @@
     "@babel/node": "^7.6.2",
     "@babel/preset-env": "^7.6.2",
     "@babel/preset-flow": "^7.0.0",
-    "nodemon": "^1.19.3"
+    "flow-bin": "^0.109.0",
+    "flow-typed": "^2.6.1",
+    "nodemon": "^1.19.3",
+    "prettier": "^1.18.2"
   }
 }

@@ -1,6 +1,12 @@
+// @flow
 import React, {PureComponent} from "react";
+import * as Type from "./type.js";
 
-export default class Header extends PureComponent {
+type Props = {
+  buyStatus: Type.BuyStatus,
+};
+
+export default class Header extends PureComponent<Props> {
   render() {
     const {buyStatus} = this.props;
 
@@ -10,7 +16,7 @@ export default class Header extends PureComponent {
       case "Loading":
         return <p>Please wait...</p>;
       case "Error":
-        return <p>An error happened: {buyStatus.message}</p>
+        return <p>An error happened: {buyStatus.message}</p>;
       default:
         return buyStatus;
     }

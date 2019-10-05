@@ -1,5 +1,5 @@
 # configuration
-src/config.json
+src/config/*.json
 
 # dependencies
 /node_modules
