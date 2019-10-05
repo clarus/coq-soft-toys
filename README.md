@@ -4,8 +4,7 @@
 **Work In Progress**
 
 ## Configuration
-* `src/keys.json`: [Stripe](https://stripe.com/) keys
-* `src/products.json`: the list of products
+* `src/config.json`: database access (PostgreSQL) and [Stripe](https://stripe.com/) keys
 
 ## Run
 To start:
