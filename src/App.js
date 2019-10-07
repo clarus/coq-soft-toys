@@ -1,6 +1,9 @@
 // @flow
 import React, {PureComponent} from "react";
+import "./style.sass";
+import Footer from "./Footer.js";
 import Header from "./Header.js";
+import NavBar from "./NavBar.js";
 import Products from "./Products.js";
 import configPublic from "./config/public.json";
 import * as Type from "./type.js";
@@ -64,16 +67,22 @@ export default class App extends PureComponent<Props, State> {
 
     return (
       <div>
-        <Header buyStatus={buyStatus} />
-        {skus.type === "Loaded" ? (
-          <Products
-            disabled={buyStatus.type !== "Nothing"}
-            onBuy={this.handleBuy}
-            skus={skus.value}
-          />
-        ) : (
-          "Loading products..."
-        )}
+        <NavBar />
+        <section className="section">
+          <div className="container">
+            <Header buyStatus={buyStatus} />
+            {skus.type === "Loaded" ? (
+              <Products
+                disabled={buyStatus.type !== "Nothing"}
+                onBuy={this.handleBuy}
+                skus={skus.value}
+              />
+            ) : (
+              "Loading products..."
+            )}
+          </div>
+        </section>
+        <Footer />
       </div>
     );
   }
