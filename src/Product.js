@@ -28,14 +28,28 @@ export default class Product extends PureComponent<Props> {
     const {disabled, image, name, price} = this.props;
 
     return (
-      <li>
-        {name}
-        <img alt="article" src={image} />
-        {this.priceToString(price)}
-        <button disabled={disabled} onClick={this.handleBuy}>
-          Buy
-        </button>
-      </li>
+      <div className="box">
+        <div className="columns" style={{alignItems: "center"}}>
+          <div className="column">
+            <div className="content has-text-centered">
+              <img alt="article" src={image} style={{maxHeight: 400}} />
+            </div>
+          </div>
+          <div className="column" style={{justifyContent: "left"}}>
+            <div className="content has-text-centered-mobile">
+              <h2>{name}</h2>
+              <p>{this.priceToString(price)}</p>
+              <button
+                className="button is-primary"
+                disabled={disabled}
+                onClick={this.handleBuy}
+              >
+                Buy
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     );
   }
 }

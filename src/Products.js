@@ -14,7 +14,7 @@ export default class Products extends PureComponent<Props> {
     const {disabled, onBuy, skus} = this.props;
 
     return (
-      <ul>
+      <>
         {skus.map(sku => (
           <Product
             disabled={disabled}
@@ -26,7 +26,7 @@ export default class Products extends PureComponent<Props> {
             price={sku.price}
           />
         ))}
-      </ul>
+      </>
     );
   }
 }
