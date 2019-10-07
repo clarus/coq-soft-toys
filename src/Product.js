@@ -36,7 +36,7 @@ export default class Product extends PureComponent<Props> {
             </div>
           </div>
           <div className="column" style={{justifyContent: "left"}}>
-            <div className="content">
+            <div className="content has-text-centered-mobile">
               <h2>{name}</h2>
               <p>{this.priceToString(price)}</p>
               <button
