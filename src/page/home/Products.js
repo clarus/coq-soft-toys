@@ -4,13 +4,14 @@ import Product from "./Product.js";
 import * as Type from "../../type.js";
 
 type Props = {
-  onSelectProduct: (id: string) => Promise<void>,
+  basket: Type.Basket,
+  onSelectProduct: (id: string, action: "Add" | "Remove") => void,
   skus: Type.Sku[],
 };
 
 export default class Products extends PureComponent<Props> {
   render() {
-    const {onSelectProduct, skus} = this.props;
+    const {basket, onSelectProduct, skus} = this.props;
 
     return (
       <>
@@ -22,6 +23,7 @@ export default class Products extends PureComponent<Props> {
             name={sku.attributes.name}
             onSelectProduct={onSelectProduct}
             price={sku.price}
+            quantity={basket[sku.id] | 0}
           />
         ))}
       </>

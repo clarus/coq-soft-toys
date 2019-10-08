@@ -2,16 +2,20 @@
 import React, {PureComponent} from "react";
 import classNames from "classnames";
 import A from "./A.js";
+import Basket from "./Basket.js";
 import * as Route from "./route.js";
+import * as Type from "./type.js";
 
 type Props = {
+  basket: Type.Basket,
   onChangeRoute: (route: Route.t) => void,
   route: ?Route.t,
+  skus: ?Type.Skus,
 };
 
 export default class NavBar extends PureComponent<Props> {
   render() {
-    const {onChangeRoute, route} = this.props;
+    const {basket, onChangeRoute, route, skus} = this.props;
 
     return (
       <nav
@@ -48,6 +52,9 @@ export default class NavBar extends PureComponent<Props> {
           </div>
           <div id="navbarBasicExample" className="navbar-menu">
             <div className="navbar-start">
+              {skus && <Basket basket={basket} skus={skus} />}
+            </div>
+            <div className="navbar-end">
               <A
                 className={classNames("navbar-item", {
                   "is-active": route && route.type === "About",
@@ -57,18 +64,6 @@ export default class NavBar extends PureComponent<Props> {
               >
                 About
               </A>
-            </div>
-            <div className="navbar-end">
-              <div className="navbar-item">
-                <div className="buttons">
-                  <a className="button is-primary" href="/signup">
-                    <strong>Sign up</strong>
-                  </a>
-                  <a className="button is-light" href="/login">
-                    Log in
-                  </a>
-                </div>
-              </div>
             </div>
           </div>
         </div>

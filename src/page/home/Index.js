@@ -4,20 +4,25 @@ import Products from "./Products.js";
 import * as Type from "../../type.js";
 
 type Props = {
-  onSelectProduct: (id: string) => Promise<void>,
+  basket: Type.Basket,
+  onSelectProduct: (id: string, action: "Add" | "Remove") => void,
   skus: Type.Skus,
 };
 
 export default class Home extends PureComponent<Props> {
   render() {
-    const {onSelectProduct, skus} = this.props;
+    const {basket, onSelectProduct, skus} = this.props;
 
     return (
       <>
         <div className="content">
           <h1>Welcome</h1>
         </div>
-        <Products onSelectProduct={onSelectProduct} skus={skus} />
+        <Products
+          basket={basket}
+          onSelectProduct={onSelectProduct}
+          skus={skus}
+        />
       </>
     );
   }

@@ -15,12 +15,27 @@ import * as Type from "./type.js";
 type Props = {
   onChangeRoute: (route: Route.t) => void,
   route: ?Route.t,
+  onSetState: (state: State.t) => void,
   state: State.t,
 };
 
 export default class AppIndex extends PureComponent<Props> {
-  handleSelectProduct = async (id: string): Promise<void> => {
-    console.log(id);
+  handleSelectProduct = (id: string, action: "Add" | "Remove"): void => {
+    const {onSetState, state} = this.props;
+    const quantity = (state.basket[id] || 0) + (action === "Add" ? +1 : -1);
+    const basket = {...state.basket, [id]: quantity};
+    const basketWithoutEmpty = Object.keys(basket).reduce(
+      (accumulator, id) => ({
+        ...accumulator,
+        ...(basket[id] ? {[id]: basket[id]} : {}),
+      }),
+      {},
+    );
+
+    onSetState({
+      ...state,
+      basket: basketWithoutEmpty,
+    });
   };
 
   renderContent(skus: Type.Skus) {
@@ -39,7 +54,13 @@ export default class AppIndex extends PureComponent<Props> {
       case "Buy":
         return <Buy basket={basket} buyStatus={buyStatus} skus={skus} />;
       case "Home":
-        return <Home onSelectProduct={this.handleSelectProduct} skus={skus} />;
+        return (
+          <Home
+            basket={basket}
+            onSelectProduct={this.handleSelectProduct}
+            skus={skus}
+          />
+        );
       case "PaymentFailure":
         return <PaymentFailure />;
       case "PaymentSuccess":
@@ -63,12 +84,17 @@ export default class AppIndex extends PureComponent<Props> {
     const {
       onChangeRoute,
       route,
-      state: {skus},
+      state: {basket, skus},
     } = this.props;
 
     return (
       <>
-        <NavBar onChangeRoute={onChangeRoute} route={route} />
+        <NavBar
+          basket={basket}
+          onChangeRoute={onChangeRoute}
+          route={route}
+          skus={skus}
+        />
         <section className="section">
           <div className="container">
             {skus ? this.renderContent(skus) : this.renderLoader()}

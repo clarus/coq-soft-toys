@@ -1,30 +1,31 @@
 // @flow
 import React, {PureComponent} from "react";
+import * as Util from "../../util.js";
 
 type Props = {
   id: string,
   image: string,
   name: string,
-  onSelectProduct: (id: string) => Promise<void>,
+  onSelectProduct: (id: string, action: "Add" | "Remove") => void,
   price: number,
+  quantity: number,
 };
 
 export default class Product extends PureComponent<Props> {
-  handleSelect = () => {
+  handleAdd = () => {
     const {id, onSelectProduct} = this.props;
 
-    onSelectProduct(id);
+    onSelectProduct(id, "Add");
   };
 
-  priceToString(price: number): string {
-    const cents = price % 100;
-    const euros = Math.round((price - cents) / 100);
+  handleRemove = () => {
+    const {id, onSelectProduct} = this.props;
 
-    return `${euros},${String(100 + cents).slice(1)} €`;
-  }
+    onSelectProduct(id, "Remove");
+  };
 
   render() {
-    const {image, name, price} = this.props;
+    const {image, name, price, quantity} = this.props;
 
     return (
       <div className="box">
@@ -36,9 +37,19 @@ export default class Product extends PureComponent<Props> {
           </div>
           <div className="column" style={{justifyContent: "left"}}>
             <div className="content has-text-centered-mobile">
-              <h2>{name}</h2>
-              <p>{this.priceToString(price)}</p>
-              <button className="button is-primary" onClick={this.handleSelect}>
+              <h2>
+                {name}
+                {quantity !== 0 && <small>&nbsp;(x{quantity})</small>}
+              </h2>
+              <p>{Util.priceToString(price)}&nbsp;€</p>
+              <button
+                className="button is-danger"
+                disabled={quantity === 0}
+                onClick={this.handleRemove}
+              >
+                Remove
+              </button>
+              <button className="button is-primary" onClick={this.handleAdd}>
                 Add
               </button>
             </div>

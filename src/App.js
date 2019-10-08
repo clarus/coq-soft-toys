@@ -41,6 +41,10 @@ export default class App extends Component<Props, State.t> {
     onRender();
   };
 
+  handleSetState = (state: State.t): void => {
+    this.setState(state);
+  };
+
   async componentDidMount(): Promise<void> {
     const skus = await (await fetch("http://localhost:4000/skus")).json();
 
@@ -53,6 +57,7 @@ export default class App extends Component<Props, State.t> {
     return (
       <AppIndex
         onChangeRoute={this.handleChangeRoute}
+        onSetState={this.handleSetState}
         route={route}
         state={this.state}
       />
