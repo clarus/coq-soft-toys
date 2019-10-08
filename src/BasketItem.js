@@ -1,21 +1,17 @@
 // @flow
 import React, {PureComponent} from "react";
+import * as State from "./state.js";
 import * as Util from "./util.js";
 
-type Props = {
-  image: string,
-  name: string,
-  price: number,
-  quantity: number,
-};
+type Props = State.BasketItem;
 
-export default class BasketElement extends PureComponent<Props> {
+export default class BasketItem extends PureComponent<Props> {
   render() {
     const {image, name, price, quantity} = this.props;
 
     return (
-      <div className="media" style={{minWidth: 200}}>
-        <figure className="media-left">
+      <div className="media" style={{minWidth: 250}}>
+        <figure className="media-left" style={{marginLeft: 20}}>
           <p className="image">
             <img alt="article preview" src={image} />
           </p>
@@ -27,7 +23,7 @@ export default class BasketElement extends PureComponent<Props> {
             </p>
           </div>
         </div>
-        <div className="media-right">
+        <div className="media-right" style={{marginRight: 20}}>
           <div className="content">
             <p>
               <small>{Util.priceToString(price * quantity)}&nbsp;€</small>

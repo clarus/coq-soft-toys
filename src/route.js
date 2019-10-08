@@ -5,9 +5,6 @@ export type t =
       type: "About",
     }
   | {
-      type: "Buy",
-    }
-  | {
       type: "Home",
     }
   | {
@@ -15,6 +12,9 @@ export type t =
     }
   | {
       type: "PaymentSuccess",
+    }
+  | {
+      type: "Order",
     };
 
 export function fromUrl(url: string): ?t {
@@ -23,12 +23,12 @@ export function fromUrl(url: string): ?t {
       return {type: "Home"};
     case "/about":
       return {type: "About"};
-    case "/buy":
-      return {type: "Buy"};
     case "/payment-failure":
       return {type: "PaymentFailure"};
     case "/payment-success":
       return {type: "PaymentSuccess"};
+    case "/order":
+      return {type: "Order"};
     default:
       return null;
   }
@@ -38,14 +38,14 @@ export function toUrl(route: t): string {
   switch (route.type) {
     case "About":
       return "/about";
-    case "Buy":
-      return "/buy";
     case "Home":
       return "/";
     case "PaymentFailure":
       return "/payment-failure";
     case "PaymentSuccess":
       return "/payment-success";
+    case "Order":
+      return "/order";
     default:
       return route;
   }

@@ -3,11 +3,12 @@ import React, {PureComponent} from "react";
 import Footer from "./Footer.js";
 import NavBar from "./NavBar.js";
 import About from "./page/about/Index.js";
-import Buy from "./page/buy/Index.js";
 import Home from "./page/home/Index.js";
 import NotFound from "./page/not-found/Index.js";
 import PaymentFailure from "./page/payment-failure/Index.js";
 import PaymentSuccess from "./page/payment-success/Index.js";
+import Order from "./page/order/Index.js";
+import * as OrderState from "./page/order/state.js";
 import * as Route from "./route.js";
 import * as State from "./state.js";
 import * as Type from "./type.js";
@@ -38,10 +39,16 @@ export default class AppIndex extends PureComponent<Props> {
     });
   };
 
+  handleSetState = (order: OrderState.t): void => {
+    const {onSetState, state} = this.props;
+
+    onSetState({...state, order});
+  };
+
   renderContent(skus: Type.Skus) {
     const {
       route,
-      state: {basket, buyStatus},
+      state: {basket, order},
     } = this.props;
 
     if (!route) {
@@ -51,8 +58,15 @@ export default class AppIndex extends PureComponent<Props> {
     switch (route.type) {
       case "About":
         return <About />;
-      case "Buy":
-        return <Buy basket={basket} buyStatus={buyStatus} skus={skus} />;
+      case "Order":
+        return (
+          <Order
+            basket={basket}
+            onSetState={this.handleSetState}
+            skus={skus}
+            state={order}
+          />
+        );
       case "Home":
         return (
           <Home

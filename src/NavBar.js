@@ -52,7 +52,13 @@ export default class NavBar extends PureComponent<Props> {
           </div>
           <div id="navbarBasicExample" className="navbar-menu">
             <div className="navbar-start">
-              {skus && <Basket basket={basket} skus={skus} />}
+              {skus && (
+                <Basket
+                  basket={basket}
+                  onChangeRoute={onChangeRoute}
+                  skus={skus}
+                />
+              )}
             </div>
             <div className="navbar-end">
               <A

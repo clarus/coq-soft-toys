@@ -14,7 +14,7 @@ export default class App extends Component<Props, State.t> {
   state: State.t = State.initialState;
 
   handleBuy = async (id: string): Promise<void> => {
-    this.setState({buyStatus: {type: "Loading"}});
+    // this.setState({orderStatus: {type: "Loading"}});
 
     // eslint-disable-next-line no-undef
     const stripe = Stripe(configPublic.stripe.key);
@@ -25,12 +25,12 @@ export default class App extends Component<Props, State.t> {
     });
 
     if (result.error) {
-      this.setState({
-        buyStatus: {
-          type: "Error",
-          message: result.error.message,
-        },
-      });
+      // this.setState({
+      //   orderStatus: {
+      //     type: "Error",
+      //     message: result.error.message,
+      //   },
+      // });
     }
   };
 

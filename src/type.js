@@ -4,18 +4,6 @@ export type Basket = {
   [id: string]: number,
 };
 
-export type BuyStatus =
-  | {
-      type: "Error",
-      message: string,
-    }
-  | {
-      type: "Loading",
-    }
-  | {
-      type: "Nothing",
-    };
-
 export type Sku = {
   attributes: {
     name: string,

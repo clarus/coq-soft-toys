@@ -1,18 +1,27 @@
 // @flow
 import React, {PureComponent} from "react";
-import BasketElement from "./BasketElement.js";
+import BasketItem from "./BasketItem.js";
+import * as Route from "./route.js";
+import * as State from "./state.js";
 import * as Type from "./type.js";
 
 type Props = {
   basket: Type.Basket,
+  onChangeRoute: (route: Route.t) => void,
   skus: Type.Skus,
 };
 
 export default class Basket extends PureComponent<Props> {
+  handleSelectOrder = (): void => {
+    const {onChangeRoute} = this.props;
+
+    onChangeRoute({type: "Order"});
+  };
+
   render() {
     const {basket, skus} = this.props;
     const numberOfElements = Object.keys(basket).reduce(
-      (quantity, id) => quantity + basket[id],
+      (quantity, id: string) => quantity + basket[id],
       0,
     );
 
@@ -22,34 +31,20 @@ export default class Basket extends PureComponent<Props> {
 
     return (
       <div className="navbar-item has-dropdown is-hoverable">
-        <div className="navbar-link">Basket&nbsp;({numberOfElements})</div>
+        <div className="navbar-link" onClick={this.handleSelectOrder}>
+          Basket&nbsp;({numberOfElements})
+        </div>
         <div className="navbar-dropdown has-text-centered">
-          {Object.keys(basket).map(id => {
-            const quantity = basket[id];
-            const sku = skus.find(sku => sku.id === id);
-
-            if (sku) {
-              const {
-                attributes: {name},
-                image,
-                price,
-              } = sku;
-
-              return (
-                <BasketElement
-                  key={id}
-                  image={image}
-                  name={name}
-                  price={price}
-                  quantity={quantity}
-                />
-              );
-            }
-
-            return null;
-          })}
+          {State.getBasketItems(basket, skus).map(basketItem => (
+            <BasketItem key={basketItem.id} {...basketItem} />
+          ))}
           <hr />
-          <button className="button is-primary">Order</button>
+          <button
+            className="button is-primary"
+            onClick={this.handleSelectOrder}
+          >
+            Order
+          </button>
         </div>
       </div>
     );

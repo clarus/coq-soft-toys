@@ -42,16 +42,18 @@ export default class Product extends PureComponent<Props> {
                 {quantity !== 0 && <small>&nbsp;(x{quantity})</small>}
               </h2>
               <p>{Util.priceToString(price)}&nbsp;€</p>
-              <button
-                className="button is-danger"
-                disabled={quantity === 0}
-                onClick={this.handleRemove}
-              >
-                Remove
-              </button>
-              <button className="button is-primary" onClick={this.handleAdd}>
-                Add
-              </button>
+              <div className="buttons">
+                <button
+                  className="button is-danger"
+                  disabled={quantity === 0}
+                  onClick={this.handleRemove}
+                >
+                  Remove
+                </button>
+                <button className="button is-primary" onClick={this.handleAdd}>
+                  Add
+                </button>
+              </div>
             </div>
           </div>
         </div>
