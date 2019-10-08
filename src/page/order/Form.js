@@ -5,6 +5,7 @@ import * as State from "./state.js";
 
 type Props = {
   fields: State.Fields,
+  onSelectOrder: () => void,
   onSetFields: (fields: State.Fields) => void,
 };
 
@@ -22,7 +23,7 @@ export default class OrderForm extends PureComponent<Props> {
   };
 
   render() {
-    const {fields} = this.props;
+    const {fields, onSelectOrder} = this.props;
 
     return (
       <>
@@ -80,6 +81,13 @@ export default class OrderForm extends PureComponent<Props> {
               />
               &nbsp;I agree to the terms and conditions
             </label>
+          </div>
+        </div>
+        <div className="field is-grouped">
+          <div className="control">
+            <button className="button is-primary" onClick={onSelectOrder}>
+              Order
+            </button>
           </div>
         </div>
       </>

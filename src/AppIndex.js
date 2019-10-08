@@ -16,6 +16,7 @@ import * as Type from "./type.js";
 type Props = {
   onChangeRoute: (route: Route.t) => void,
   route: ?Route.t,
+  onSelectOrder: () => void,
   onSetState: (state: State.t) => void,
   state: State.t,
 };
@@ -47,6 +48,7 @@ export default class AppIndex extends PureComponent<Props> {
 
   renderContent(skus: Type.Skus) {
     const {
+      onSelectOrder,
       route,
       state: {basket, order},
     } = this.props;
@@ -62,6 +64,7 @@ export default class AppIndex extends PureComponent<Props> {
         return (
           <Order
             basket={basket}
+            onSelectOrder={onSelectOrder}
             onSetState={this.handleSetState}
             skus={skus}
             state={order}

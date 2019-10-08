@@ -13,25 +13,42 @@ type Props = {
 export default class App extends Component<Props, State.t> {
   state: State.t = State.initialState;
 
-  handleBuy = async (id: string): Promise<void> => {
+  async doOrder(): Promise<void> {
     // this.setState({orderStatus: {type: "Loading"}});
+    const {
+      basket,
+      order: {
+        fields: {email},
+      },
+      skus,
+    } = this.state;
 
-    // eslint-disable-next-line no-undef
-    const stripe = Stripe(configPublic.stripe.key);
-    const result = await stripe.redirectToCheckout({
-      cancelUrl: `${configPublic.stripe.url.root}/cancel`,
-      items: [{sku: id, quantity: 1}],
-      successUrl: `${configPublic.stripe.url.root}/success`,
-    });
+    if (skus) {
+      // eslint-disable-next-line no-undef
+      const stripe = Stripe(configPublic.stripe.key);
+      const items = State.getBasketItems(basket, skus).map(
+        ({id, quantity}) => ({quantity, sku: id}),
+      );
+      const result = await stripe.redirectToCheckout({
+        cancelUrl: `${configPublic.stripe.url.root}/cancel`,
+        customerEmail: email,
+        items,
+        successUrl: `${configPublic.stripe.url.root}/success`,
+      });
 
-    if (result.error) {
-      // this.setState({
-      //   orderStatus: {
-      //     type: "Error",
-      //     message: result.error.message,
-      //   },
-      // });
+      if (result.error) {
+        // this.setState({
+        //   orderStatus: {
+        //     type: "Error",
+        //     message: result.error.message,
+        //   },
+        // });
+      }
     }
+  }
+
+  handleSelectOrder = (): void => {
+    this.doOrder();
   };
 
   handleChangeRoute = (route: Route.t): void => {
@@ -57,6 +74,7 @@ export default class App extends Component<Props, State.t> {
     return (
       <AppIndex
         onChangeRoute={this.handleChangeRoute}
+        onSelectOrder={this.handleSelectOrder}
         onSetState={this.handleSetState}
         route={route}
         state={this.state}
