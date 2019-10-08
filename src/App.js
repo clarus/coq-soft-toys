@@ -1,34 +1,17 @@
 // @flow
-import React, {PureComponent} from "react";
+import React, {Component} from "react";
+import AppIndex from "./AppIndex.js";
 import "./style.sass";
-import Footer from "./Footer.js";
-import Header from "./Header.js";
-import NavBar from "./NavBar.js";
-import Products from "./Products.js";
 import configPublic from "./config/public.json";
-import * as Type from "./type.js";
+import * as Route from "./route.js";
+import * as State from "./state.js";
 
-type Props = {};
-
-type Skus =
-  | {
-      type: "Loaded",
-      value: Type.Sku[],
-    }
-  | {
-      type: "Loading",
-    };
-
-type State = {
-  buyStatus: Type.BuyStatus,
-  skus: Skus,
+type Props = {
+  onRender: () => void,
 };
 
-export default class App extends PureComponent<Props, State> {
-  state: State = {
-    buyStatus: {type: "Nothing"},
-    skus: {type: "Loading"},
-  };
+export default class App extends Component<Props, State.t> {
+  state: State.t = State.initialState;
 
   handleBuy = async (id: string): Promise<void> => {
     this.setState({buyStatus: {type: "Loading"}});
@@ -51,39 +34,28 @@ export default class App extends PureComponent<Props, State> {
     }
   };
 
+  handleChangeRoute = (route: Route.t): void => {
+    const {onRender} = this.props;
+
+    window.history.pushState({}, "", Route.toUrl(route));
+    onRender();
+  };
+
   async componentDidMount(): Promise<void> {
     const skus = await (await fetch("http://localhost:4000/skus")).json();
 
-    this.setState({
-      skus: {
-        type: "Loaded",
-        value: skus.data,
-      },
-    });
+    this.setState({skus: skus.data});
   }
 
   render() {
-    const {buyStatus, skus} = this.state;
+    const route = Route.fromUrl(window.location.pathname);
 
     return (
-      <div>
-        <NavBar />
-        <section className="section">
-          <div className="container">
-            <Header buyStatus={buyStatus} />
-            {skus.type === "Loaded" ? (
-              <Products
-                disabled={buyStatus.type !== "Nothing"}
-                onBuy={this.handleBuy}
-                skus={skus.value}
-              />
-            ) : (
-              "Loading products..."
-            )}
-          </div>
-        </section>
-        <Footer />
-      </div>
+      <AppIndex
+        onChangeRoute={this.handleChangeRoute}
+        route={route}
+        state={this.state}
+      />
     );
   }
 }

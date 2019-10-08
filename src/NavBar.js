@@ -1,10 +1,18 @@
 // @flow
 import React, {PureComponent} from "react";
+import classNames from "classnames";
+import A from "./A.js";
+import * as Route from "./route.js";
 
-type Props = {};
+type Props = {
+  onChangeRoute: (route: Route.t) => void,
+  route: ?Route.t,
+};
 
 export default class NavBar extends PureComponent<Props> {
   render() {
+    const {onChangeRoute, route} = this.props;
+
     return (
       <nav
         className="navbar has-shadow"
@@ -13,14 +21,18 @@ export default class NavBar extends PureComponent<Props> {
       >
         <div className="container">
           <div className="navbar-brand">
-            <a className="navbar-item" href="/">
+            <A
+              className="navbar-item"
+              onChangeRoute={onChangeRoute}
+              route={{type: "Home"}}
+            >
               <strong>
                 <span aria-label="rooster" role="img">
                   🐓
                 </span>
                 &nbsp;Coq&nbsp;Soft&nbsp;Toys
               </strong>
-            </a>
+            </A>
             {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
             <a
               aria-expanded="false"
@@ -36,12 +48,15 @@ export default class NavBar extends PureComponent<Props> {
           </div>
           <div id="navbarBasicExample" className="navbar-menu">
             <div className="navbar-start">
-              <a
-                className="navbar-item"
-                href="https://github.com/clarus/coq-soft-toys"
+              <A
+                className={classNames("navbar-item", {
+                  "is-active": route && route.type === "About",
+                })}
+                onChangeRoute={onChangeRoute}
+                route={{type: "About"}}
               >
-                GitHub
-              </a>
+                About
+              </A>
             </div>
             <div className="navbar-end">
               <div className="navbar-item">

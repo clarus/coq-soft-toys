@@ -2,19 +2,18 @@
 import React, {PureComponent} from "react";
 
 type Props = {
-  disabled: boolean,
   id: string,
   image: string,
   name: string,
-  onBuy: (id: string) => Promise<void>,
+  onSelectProduct: (id: string) => Promise<void>,
   price: number,
 };
 
 export default class Product extends PureComponent<Props> {
-  handleBuy = () => {
-    const {id, onBuy} = this.props;
+  handleSelect = () => {
+    const {id, onSelectProduct} = this.props;
 
-    onBuy(id);
+    onSelectProduct(id);
   };
 
   priceToString(price: number): string {
@@ -25,7 +24,7 @@ export default class Product extends PureComponent<Props> {
   }
 
   render() {
-    const {disabled, image, name, price} = this.props;
+    const {image, name, price} = this.props;
 
     return (
       <div className="box">
@@ -39,12 +38,8 @@ export default class Product extends PureComponent<Props> {
             <div className="content has-text-centered-mobile">
               <h2>{name}</h2>
               <p>{this.priceToString(price)}</p>
-              <button
-                className="button is-primary"
-                disabled={disabled}
-                onClick={this.handleBuy}
-              >
-                Buy
+              <button className="button is-primary" onClick={this.handleSelect}>
+                Add
               </button>
             </div>
           </div>

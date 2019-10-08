@@ -1,28 +1,26 @@
 // @flow
 import React, {PureComponent} from "react";
 import Product from "./Product.js";
-import * as Type from "./type.js";
+import * as Type from "../../type.js";
 
 type Props = {
-  disabled: boolean,
-  onBuy: (id: string) => Promise<void>,
+  onSelectProduct: (id: string) => Promise<void>,
   skus: Type.Sku[],
 };
 
 export default class Products extends PureComponent<Props> {
   render() {
-    const {disabled, onBuy, skus} = this.props;
+    const {onSelectProduct, skus} = this.props;
 
     return (
       <>
         {skus.map(sku => (
           <Product
-            disabled={disabled}
             id={sku.id}
             image={sku.image}
             key={sku.id}
             name={sku.attributes.name}
-            onBuy={onBuy}
+            onSelectProduct={onSelectProduct}
             price={sku.price}
           />
         ))}
