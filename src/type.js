@@ -1,16 +1,8 @@
 // @flow
 
-export type BuyStatus =
-  | {
-      type: "Error",
-      message: string,
-    }
-  | {
-      type: "Loading",
-    }
-  | {
-      type: "Nothing",
-    };
+export type Basket = {
+  [id: string]: number,
+};
 
 export type Sku = {
   attributes: {
@@ -20,3 +12,5 @@ export type Sku = {
   image: string,
   price: number,
 };
+
+export type Skus = Sku[];

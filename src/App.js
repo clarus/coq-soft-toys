@@ -1,89 +1,84 @@
 // @flow
-import React, {PureComponent} from "react";
+import React, {Component} from "react";
+import AppIndex from "./AppIndex.js";
 import "./style.sass";
-import Footer from "./Footer.js";
-import Header from "./Header.js";
-import NavBar from "./NavBar.js";
-import Products from "./Products.js";
 import configPublic from "./config/public.json";
-import * as Type from "./type.js";
+import * as Route from "./route.js";
+import * as State from "./state.js";
 
-type Props = {};
-
-type Skus =
-  | {
-      type: "Loaded",
-      value: Type.Sku[],
-    }
-  | {
-      type: "Loading",
-    };
-
-type State = {
-  buyStatus: Type.BuyStatus,
-  skus: Skus,
+type Props = {
+  onRender: () => void,
 };
 
-export default class App extends PureComponent<Props, State> {
-  state: State = {
-    buyStatus: {type: "Nothing"},
-    skus: {type: "Loading"},
+export default class App extends Component<Props, State.t> {
+  state: State.t = State.initialState;
+
+  async doOrder(): Promise<void> {
+    // this.setState({orderStatus: {type: "Loading"}});
+    const {
+      basket,
+      order: {
+        fields: {email},
+      },
+      skus,
+    } = this.state;
+
+    if (skus) {
+      // eslint-disable-next-line no-undef
+      const stripe = Stripe(configPublic.stripe.key);
+      const items = State.getBasketItems(basket, skus).map(
+        ({id, quantity}) => ({quantity, sku: id}),
+      );
+      const result = await stripe.redirectToCheckout({
+        cancelUrl: `${configPublic.stripe.url.root}/cancel`,
+        customerEmail: email,
+        items,
+        successUrl: `${configPublic.stripe.url.root}/success`,
+      });
+
+      if (result.error) {
+        // this.setState({
+        //   orderStatus: {
+        //     type: "Error",
+        //     message: result.error.message,
+        //   },
+        // });
+      }
+    }
+  }
+
+  handleSelectOrder = (): void => {
+    this.doOrder();
   };
 
-  handleBuy = async (id: string): Promise<void> => {
-    this.setState({buyStatus: {type: "Loading"}});
+  handleChangeRoute = (route: Route.t): void => {
+    const {onRender} = this.props;
 
-    // eslint-disable-next-line no-undef
-    const stripe = Stripe(configPublic.stripe.key);
-    const result = await stripe.redirectToCheckout({
-      cancelUrl: `${configPublic.stripe.url.root}/cancel`,
-      items: [{sku: id, quantity: 1}],
-      successUrl: `${configPublic.stripe.url.root}/success`,
-    });
+    window.history.pushState({}, "", Route.toUrl(route));
+    onRender();
+  };
 
-    if (result.error) {
-      this.setState({
-        buyStatus: {
-          type: "Error",
-          message: result.error.message,
-        },
-      });
-    }
+  handleSetState = (state: State.t): void => {
+    this.setState(state);
   };
 
   async componentDidMount(): Promise<void> {
     const skus = await (await fetch("http://localhost:4000/skus")).json();
 
-    this.setState({
-      skus: {
-        type: "Loaded",
-        value: skus.data,
-      },
-    });
+    this.setState({skus: skus.data});
   }
 
   render() {
-    const {buyStatus, skus} = this.state;
+    const route = Route.fromUrl(window.location.pathname);
 
     return (
-      <div>
-        <NavBar />
-        <section className="section">
-          <div className="container">
-            <Header buyStatus={buyStatus} />
-            {skus.type === "Loaded" ? (
-              <Products
-                disabled={buyStatus.type !== "Nothing"}
-                onBuy={this.handleBuy}
-                skus={skus.value}
-              />
-            ) : (
-              "Loading products..."
-            )}
-          </div>
-        </section>
-        <Footer />
-      </div>
+      <AppIndex
+        onChangeRoute={this.handleChangeRoute}
+        onSelectOrder={this.handleSelectOrder}
+        onSetState={this.handleSetState}
+        route={route}
+        state={this.state}
+      />
     );
   }
 }

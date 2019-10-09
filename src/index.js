@@ -6,9 +6,15 @@ import * as serviceWorker from "./serviceWorker";
 
 const rootElement = document.getElementById("root");
 
-if (rootElement) {
-  ReactDOM.render(<App />, rootElement);
+function render() {
+  if (rootElement) {
+    ReactDOM.render(<App onRender={render} />, rootElement);
+  }
 }
+
+window.onpopstate = render;
+
+render();
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
